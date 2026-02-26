@@ -1,0 +1,63 @@
+  void cacheOriginalLists() {
+    originalPortfolioOverviewList.value =
+    List<PortfolioModel>.from(MyApplication.appController.portfolioListOverview);
+    originalPortfolioEquitiesList.value =
+    List<PortfolioModel>.from(MyApplication.appController.portfolioListEquities);
+    originalPortfolioBondsList.value =
+    List<PortfolioModel>.from(MyApplication.appController.portfolioListBonds);
+    originalPortfolioETFsList.value =
+    List<PortfolioModel>.from(MyApplication.appController.portfolioListETFs);
+  }
+
+  void filterHoldingsByCurrency(String? currencyCode) {
+    if (currencyCode == null) {
+      // Restore controller lists
+      portfolioOverviewList.value = List<PortfolioModel>.from(originalPortfolioOverviewList);
+      portfolioEquitiesList.value = List<PortfolioModel>.from(originalPortfolioEquitiesList);
+      portfolioBondsList.value = List<PortfolioModel>.from(originalPortfolioBondsList);
+      portfolioETFsList.value = List<PortfolioModel>.from(originalPortfolioETFsList);
+
+      MyApplication.appController.portfolioListOverview.value =
+      List<PortfolioModel>.from(originalPortfolioOverviewList);
+      MyApplication.appController.portfolioListEquities.value =
+      List<PortfolioModel>.from(originalPortfolioEquitiesList);
+      MyApplication.appController.portfolioListBonds.value =
+      List<PortfolioModel>.from(originalPortfolioBondsList);
+      MyApplication.appController.portfolioListETFs.value =
+      List<PortfolioModel>.from(originalPortfolioETFsList);
+
+    } else {
+      // Filter controller lists
+      portfolioOverviewList.value = originalPortfolioOverviewList
+          .where((e) => (e as PortfolioModel).currencyCode == currencyCode)
+          .cast<PortfolioModel>()
+          .toList();
+      portfolioEquitiesList.value = originalPortfolioEquitiesList
+          .where((e) => (e as PortfolioModel).currencyCode == currencyCode)
+          .cast<PortfolioModel>()
+          .toList();
+      portfolioBondsList.value = originalPortfolioBondsList
+          .where((e) => (e as PortfolioModel).currencyCode == currencyCode)
+          .cast<PortfolioModel>()
+          .toList();
+      portfolioETFsList.value = originalPortfolioETFsList
+          .where((e) => (e as PortfolioModel).currencyCode == currencyCode)
+          .cast<PortfolioModel>()
+          .toList();
+
+      MyApplication.appController.portfolioListOverview.value =
+          portfolioOverviewList.value;
+      MyApplication.appController.portfolioListEquities.value =
+          portfolioEquitiesList.value;
+      MyApplication.appController.portfolioListBonds.value =
+          portfolioBondsList.value;
+      MyApplication.appController.portfolioListETFs.value =
+          portfolioETFsList.value;
+    }
+
+    // Refresh so Obx in SymbolRow rebuilds
+    MyApplication.appController.portfolioListOverview.refresh();
+    MyApplication.appController.portfolioListEquities.refresh();
+    MyApplication.appController.portfolioListBonds.refresh();
+    MyApplication.appController.portfolioListETFs.refresh();
+  }
